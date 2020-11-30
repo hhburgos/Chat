@@ -13,7 +13,7 @@ public class SQLConnection {
 	public static Connection getConnection() {
 		try {
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			cn=DriverManager.getConnection("jdbc:sqlserver://192.168.43.108:1433;databaseName=HolaMundo","PEPE","1234");
+			cn=DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=HolaMundo","PEPE","1234");
 		}
 		catch (Exception e) {
 			System.out.println(e.getMessage());

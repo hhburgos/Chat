@@ -63,13 +63,13 @@ public class Servidor extends JFrame implements Runnable {
 				ObjectInputStream datos = new ObjectInputStream(miSocket.getInputStream());
 				usuario_recibido = (Perfil) datos.readObject();
 				
-				ip = usuario_recibido.getIp();
+				ip = usuario_recibido.getIp().toString();
 				nickname = usuario_recibido.getNickname();
 				mensaje = usuario_recibido.getMensaje();
 				
 				textArea.append(nickname + ": " + mensaje + " para " + ip + "\n");
 				
-				Socket envia_destinatario = new Socket(ip.toString(),9090);
+				Socket envia_destinatario = new Socket("172.202.255.238",9090);
 				ObjectOutputStream datos_reenvio = new ObjectOutputStream(envia_destinatario.getOutputStream());
 				datos_reenvio.writeObject(usuario_recibido);
 				

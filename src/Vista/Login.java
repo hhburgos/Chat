@@ -60,6 +60,9 @@ public class Login extends JFrame implements ActionListener {
 		
 		if (SQLConnection.compruebaLogin(mail, password)) {
 			JOptionPane.showMessageDialog(this, "Inicio de sesión correcto");
+			this.setVisible(false);
+			Cliente1 c = new Cliente1();
+			c.setVisible(true);
 		} else {
 			JOptionPane.showMessageDialog(this, "Datos incorrectos","ERROR", JOptionPane.ERROR_MESSAGE);
 		}

@@ -1,30 +1,25 @@
 package Vista;
 
-import Modelo.Perfil;
-import Modelo.miPC;
-
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
-import java.awt.Font;
+import Modelo.Perfil;
 
-public class Cliente extends JFrame implements ActionListener,Runnable {
+public class Cliente1 extends JDialog implements ActionListener, Runnable {
 
 	private JPanel contentPane;
 	private JTextField tfMensaje;
@@ -33,15 +28,17 @@ public class Cliente extends JFrame implements ActionListener,Runnable {
 	private JTextField tfNick;
 	private JTextField tfIP;
 	
-	private String miIP;
-	private static final int puertoSalida = 9999;
-	
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		Cliente mimarco = new Cliente();
-		mimarco.setVisible(true);
+		try {
+			Cliente1 dialog = new Cliente1();
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -61,9 +58,8 @@ public class Cliente extends JFrame implements ActionListener,Runnable {
 			nickname = this.tfNick.getText();
 			mensaje = this.tfMensaje.getText();
 			
-			miIP = miPC.obtenerIP();
 			usuario = new Perfil(ip, nickname, mensaje);
-			miSocket = new Socket(miIP ,puertoSalida);
+			miSocket = new Socket("172.202.255.238" ,9999);
 			
 			ObjectOutputStream datos = new ObjectOutputStream(miSocket.getOutputStream());
 			datos.writeObject(usuario);
@@ -78,10 +74,9 @@ public class Cliente extends JFrame implements ActionListener,Runnable {
 	}
 
 	/**
-	 * Create the frame.
+	 * Create the dialog.
 	 */
-	public Cliente() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public Cliente1() {
 		setBounds(100, 100, 1195, 757);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -137,4 +132,5 @@ public class Cliente extends JFrame implements ActionListener,Runnable {
 			System.out.println(e.getMessage());
 		}
 	}
+
 }

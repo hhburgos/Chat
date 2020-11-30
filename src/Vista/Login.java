@@ -1,22 +1,28 @@
 package Vista;
 
+import Modelo.SQLConnection;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
-import javax.swing.JLabel;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class Login extends JFrame {
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+public class Login extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-
+	private JTextField tfMail;
+	private JTextField tfPassword;
+	private JLabel lblLogin = new JLabel("LOGIN");
+	private JButton btnEntrar = new JButton("Entrar");
 	/**
 	 * Launch the application.
 	 */
@@ -32,6 +38,42 @@ public class Login extends JFrame {
 			}
 		});
 	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getSource() == btnEntrar) {
+			verificacion();
+		}
+	}
+	
+	public void verificacion () { //falta veriifcar que esten llenos los campos
+		String mail, password;
+		
+		mail = tfMail.getText().trim();
+		password = tfPassword.getText().trim();
+		
+		if (!camposLlenos()) {
+			JOptionPane.showMessageDialog(this, "No puedes dejar campos vacíos","Atención", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		if (SQLConnection.compruebaLogin(mail, password)) {
+			JOptionPane.showMessageDialog(this, "Inicio de sesión correcto");
+		} else {
+			JOptionPane.showMessageDialog(this, "Datos incorrectos","ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	public boolean camposLlenos () {
+		if (tfMail.getText().trim().equals("")) {
+			return(false);
+		} else if (tfPassword.getText().trim().equals("")) {
+			return(false);
+		} else {
+			return (true);
+		}
+	}
 
 	/**
 	 * Create the frame.
@@ -44,25 +86,25 @@ public class Login extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setToolTipText("");
-		textField.setBounds(129, 132, 232, 39);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		tfMail = new JTextField();
+		tfMail.setToolTipText("");
+		tfMail.setBounds(129, 132, 232, 39);
+		contentPane.add(tfMail);
+		tfMail.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(129, 176, 232, 39);
-		contentPane.add(textField_1);
+		tfPassword = new JTextField();
+		tfPassword.setColumns(10);
+		tfPassword.setBounds(129, 176, 232, 39);
+		contentPane.add(tfPassword);
 		
-		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setFont(new Font("Tahoma", Font.PLAIN, 17));
 		btnEntrar.setBounds(149, 228, 199, 39);
 		contentPane.add(btnEntrar);
+		btnEntrar.addActionListener(this);
 		
-		JLabel lblLogin = new JLabel("LOGIN");
 		lblLogin.setFont(new Font("Tahoma", Font.BOLD, 27));
 		lblLogin.setBounds(194, 60, 130, 39);
 		contentPane.add(lblLogin);
 	}
+
 }

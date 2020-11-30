@@ -1,15 +1,20 @@
-package Prueba;
+package Vista;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import Modelo.Perfil;
+
 import javax.swing.JTextArea;
 
 public class Servidor extends JFrame implements Runnable {
@@ -49,19 +54,37 @@ public class Servidor extends JFrame implements Runnable {
 		//System.out.println("Estoy a la escucha1");
 		try {
 			ServerSocket servidor = new ServerSocket(9999); 
+			String ip, nickname, mensaje;
+			
+			Perfil usuario_recibido;
+			
 			while (true) {
-				Socket misocket = servidor.accept();
+				Socket miSocket = servidor.accept();
+				ObjectInputStream datos = new ObjectInputStream(miSocket.getInputStream());
+				usuario_recibido = (Perfil) datos.readObject();
 				
-				DataInputStream flujo_entrada = new DataInputStream(misocket.getInputStream());
+				ip = usuario_recibido.getIp();
+				nickname = usuario_recibido.getNickname();
+				mensaje = usuario_recibido.getMensaje();
 				
-				String mensaje_texto = flujo_entrada.readUTF();
-				textArea.append("\n" + mensaje_texto);
-				misocket.close();
+				textArea.append(nickname + ": " + mensaje + " para " + ip + "\n");
+				
+				Socket envia_destinatario = new Socket(ip.toString(),9090);
+				ObjectOutputStream datos_reenvio = new ObjectOutputStream(envia_destinatario.getOutputStream());
+				datos_reenvio.writeObject(usuario_recibido);
+				
+				datos_reenvio.close();
+				datos.close();
+				envia_destinatario.close();
+				miSocket.close();
 			}
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("ssss");
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

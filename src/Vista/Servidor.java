@@ -54,7 +54,7 @@ public class Servidor extends JFrame implements Runnable {
 		//System.out.println("Estoy a la escucha1");
 		try {
 			ServerSocket servidor = new ServerSocket(9999); 
-			String ip, nickname, mensaje;
+			String ipEmisor, ipDestinatario, nickname, mensaje;
 			
 			Perfil usuario_recibido;
 			
@@ -63,13 +63,14 @@ public class Servidor extends JFrame implements Runnable {
 				ObjectInputStream datos = new ObjectInputStream(miSocket.getInputStream());
 				usuario_recibido = (Perfil) datos.readObject();
 				
-				ip = usuario_recibido.getIp().toString();
+				ipEmisor = usuario_recibido.getIpEmisor();
+				ipDestinatario = usuario_recibido.getIpDestinatario();
 				nickname = usuario_recibido.getNickname();
 				mensaje = usuario_recibido.getMensaje();
 				
-				textArea.append(nickname + ": " + mensaje + " para " + ip + "\n");
+				textArea.append(nickname + ": " + mensaje + " para " + ipDestinatario + "\n");
 				
-				Socket envia_destinatario = new Socket("172.202.255.238",9090);
+				Socket envia_destinatario = new Socket(ipDestinatario,9090);
 				ObjectOutputStream datos_reenvio = new ObjectOutputStream(envia_destinatario.getOutputStream());
 				datos_reenvio.writeObject(usuario_recibido);
 				

@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import Modelo.Perfil;
+import Modelo.Mensaje;
 
 import javax.swing.JTextArea;
 
@@ -56,12 +56,12 @@ public class Servidor extends JFrame implements Runnable {
 			ServerSocket servidor = new ServerSocket(9999); 
 			String ipEmisor, ipDestinatario, nickname, mensaje;
 			
-			Perfil usuario_recibido;
+			Mensaje usuario_recibido;
 			
 			while (true) {
 				Socket miSocket = servidor.accept();
 				ObjectInputStream datos = new ObjectInputStream(miSocket.getInputStream());
-				usuario_recibido = (Perfil) datos.readObject();
+				usuario_recibido = (Mensaje) datos.readObject();
 				
 				ipEmisor = usuario_recibido.getIpEmisor();
 				ipDestinatario = usuario_recibido.getIpDestinatario();

@@ -17,7 +17,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import Modelo.Perfil;
+import Modelo.Mensaje;
 import Modelo.miPC;
 
 public class Cliente1 extends JDialog implements ActionListener, Runnable {
@@ -56,16 +56,15 @@ public class Cliente1 extends JDialog implements ActionListener, Runnable {
 		try {
 			Socket miSocket;
 			String ipEmisor, ipDestinatario, nickname, mensaje;
-			Perfil usuario;
+			Mensaje usuario;
 			
-			ipEmisor = miPC.obtenerIP();//
+			ipEmisor = miPC.obtenerIP();
 			ipDestinatario = tfIP.getText();
 			nickname = this.tfNick.getText();
 			mensaje = this.tfMensaje.getText();
 			
-			//el obtenIP solo sirve para cargarlo a la clase Perfil que se envia, ya que es el ip del emisor. informaciom del emisor
 			serverIP = miPC.obtenerIP();
-			usuario = new Perfil(ipEmisor, ipDestinatario, nickname, mensaje);
+			usuario = new Mensaje(ipEmisor, ipDestinatario, nickname, mensaje);
 			miSocket = new Socket(serverIP ,9999);
 			
 			ObjectOutputStream datos = new ObjectOutputStream(miSocket.getOutputStream());
@@ -125,13 +124,20 @@ public class Cliente1 extends JDialog implements ActionListener, Runnable {
 		try {
 			ServerSocket servidor_cliente = new ServerSocket(9090);
 			Socket cliente;
-			Perfil usuario_recibido;
+			Mensaje usuario_recibido;
+			String nick, mensaje, hora;
 			
-			while (true){
+			while (true) {
 					cliente = servidor_cliente.accept();
 					ObjectInputStream flujo_entrada = new ObjectInputStream(cliente.getInputStream());
-					usuario_recibido = (Perfil) flujo_entrada.readObject();
-					textArea.append(usuario_recibido.getNickname() + ": " + usuario_recibido.getMensaje() + "\n");
+					usuario_recibido = (Mensaje) flujo_entrada.readObject();
+					
+					nick = usuario_recibido.getNickname();
+					mensaje = usuario_recibido.getMensaje();
+					hora = miPC.dameHM(usuario_recibido.getMomento());
+					textArea.append(nick + ": " + mensaje + " " + hora + "\n");
+					
+					//flujo_entrada.close();
 					cliente.close(); //puede que sobre
 			}
 		}

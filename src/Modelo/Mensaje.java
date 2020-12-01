@@ -1,20 +1,19 @@
 package Modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class Perfil implements Serializable {
+public class Mensaje implements Serializable {
 
-	private String nickname;
-	private String ipEmisor;
-	private String ipDestinatario;
-	private String mensaje; 
-	//foto
+	private String ipEmisor, ipDestinatario, nickname, mensaje;
+	private Date momento;
 	
-	public Perfil (String ipEmisor, String ipDestinatario, String nickname, String mensaje) {
+	public Mensaje (String ipEmisor, String ipDestinatario, String nickname, String mensaje) {
 		this.nickname = nickname;
 		this.ipEmisor = ipEmisor;
 		this.ipDestinatario = ipDestinatario;
 		this.mensaje = mensaje;
+		momento = new Date();
 	}
 	
 	
@@ -50,6 +49,16 @@ public class Perfil implements Serializable {
 
 	public void setMensaje(String mensaje) {
 		this.mensaje = mensaje;
+	}
+
+
+	public Date getMomento() {
+		return momento;
+	}
+
+
+	public void setMomento(Date momento) {
+		this.momento = momento;
 	}
 
 

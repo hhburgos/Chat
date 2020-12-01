@@ -30,7 +30,7 @@ public class Cliente1 extends JDialog implements ActionListener, Runnable {
 	private JTextField tfIP;
 	
 	private String serverIP;
-	private static final int puertoSalida = 9999;
+	private static final int puertoSalida = 9999, puertoEntrada = 9090;
 	
 	/**
 	 * Launch the application.
@@ -65,7 +65,7 @@ public class Cliente1 extends JDialog implements ActionListener, Runnable {
 			
 			serverIP = miPC.obtenerIP();
 			usuario = new Mensaje(ipEmisor, ipDestinatario, nickname, mensaje);
-			miSocket = new Socket(serverIP ,9999);
+			miSocket = new Socket(serverIP, puertoSalida);
 			
 			ObjectOutputStream datos = new ObjectOutputStream(miSocket.getOutputStream());
 			datos.writeObject(usuario);
@@ -122,7 +122,7 @@ public class Cliente1 extends JDialog implements ActionListener, Runnable {
 	public void run() {
 		// TODO Auto-generated method stub
 		try {
-			ServerSocket servidor_cliente = new ServerSocket(9090);
+			ServerSocket servidor_cliente = new ServerSocket(puertoEntrada);
 			Socket cliente;
 			Mensaje usuario_recibido;
 			String nick, mensaje, hora;

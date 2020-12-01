@@ -9,6 +9,7 @@ import java.sql.Statement;
 public class SQLConnection {
     
 	private static Connection cn;
+	private static String serverIP;
 	
 	public static Connection getConnection() {
 		try {
@@ -48,8 +49,12 @@ public class SQLConnection {
 		}
 	}
 	
+//	public static String dameNickname (String correo) {
+//		
+//	}
+	
 	public static void main (String [] args) {
-		compruebaLogin("jon@g.com","admind");
+	//	compruebaLogin("jon@g.com","admind");
 //		Connection pruebaCn = SQLConection.getConnection();
 //		if (pruebaCn!=null) {
 //			System.out.println("Conectado\n" + pruebaCn.toString());
@@ -69,5 +74,12 @@ public class SQLConnection {
 //			System.out.println("No conectado");
 //		}
 	}
-    
+
+	public static String getServerIP() {
+		return serverIP;
+	}
+
+	public static void setServerIP(String serverIP) {
+		SQLConnection.serverIP = serverIP;
+	}
 }

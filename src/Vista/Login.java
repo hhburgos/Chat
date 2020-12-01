@@ -1,6 +1,7 @@
 package Vista;
 
 import Modelo.SQLConnection;
+import Modelo.Usuario;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -23,6 +24,9 @@ public class Login extends JFrame implements ActionListener {
 	private JTextField tfPassword;
 	private JLabel lblLogin = new JLabel("LOGIN");
 	private JButton btnEntrar = new JButton("Entrar");
+	private Usuario user;
+	private JTextField tfIPServidor;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -48,10 +52,11 @@ public class Login extends JFrame implements ActionListener {
 	}
 	
 	public void verificacion () { //falta veriifcar que esten llenos los campos
-		String mail, password;
+		String mail, password, ipServer;
 		
 		mail = tfMail.getText().trim();
 		password = tfPassword.getText().trim();
+		ipServer = tfIPServidor.getText().trim();
 		
 		if (!camposLlenos()) {
 			JOptionPane.showMessageDialog(this, "No puedes dejar campos vacíos","Atención", JOptionPane.WARNING_MESSAGE);
@@ -59,7 +64,8 @@ public class Login extends JFrame implements ActionListener {
 		}
 		
 		if (SQLConnection.compruebaLogin(mail, password)) {
-			JOptionPane.showMessageDialog(this, "Inicio de sesión correcto");
+			user = new Usuario(mail,ipServer);
+			//JOptionPane.showMessageDialog(this, "Inicio de sesión correcto");
 			this.setVisible(false);
 			Cliente1 c = new Cliente1();
 			c.setVisible(true);
@@ -72,6 +78,8 @@ public class Login extends JFrame implements ActionListener {
 		if (tfMail.getText().trim().equals("")) {
 			return(false);
 		} else if (tfPassword.getText().trim().equals("")) {
+			return(false);
+		} else if (tfIPServidor.getText().trim().equals("")) {
 			return(false);
 		} else {
 			return (true);
@@ -108,6 +116,19 @@ public class Login extends JFrame implements ActionListener {
 		lblLogin.setFont(new Font("Tahoma", Font.BOLD, 27));
 		lblLogin.setBounds(194, 60, 130, 39);
 		contentPane.add(lblLogin);
+		
+		tfIPServidor = new JTextField();
+		tfIPServidor.setBounds(12, 300, 130, 22);
+		contentPane.add(tfIPServidor);
+		tfIPServidor.setColumns(10);
+	}
+
+	public Usuario getUser() {
+		return user;
+	}
+
+	public void setUser(Usuario user) {
+		this.user = user;
 	}
 
 }
